@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatNumberWithCommas } from "./utils/function";
 
 const filterCountries = (data, countriesToExclude) => {
   return data.filter(
@@ -6,10 +7,10 @@ const filterCountries = (data, countriesToExclude) => {
   );
 };
 
-const displayedYears = [
-  1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010,
-  2015, 2021,
-];
+// const displayedYears = [
+//   1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010,
+//   2015, 2021,
+// ];
 
 const Population = () => {
   const [filteredData, setFilteredData] = useState([]);
@@ -89,8 +90,10 @@ const Population = () => {
 
           const slicedData = prevData.slice(0, 12);
           const maxGraphWidth = window.innerWidth;
-          const scale = maxGraphWidth / totalPopulation;
-          //Math.max(...slicedData.map((item) => item.Population));
+          const scale =
+            maxGraphWidth /
+            //totalPopulation;
+            Math.max(...slicedData.map((item) => item.Population));
 
           slicedData.forEach((item) => {
             item.graphWidth = item.Population * scale;
@@ -138,42 +141,59 @@ const Population = () => {
 
     const intervalId = setInterval(() => {
       fetchDataFromAPI(currentPage + 3);
-    }, 100);
+    }, 50);
 
     return () => clearInterval(intervalId);
-  }, [currentPage, totalPopulation, latestYearWithPopulationIncrease]);
+  }, [
+    currentPage,
+    totalPopulation,
+    latestYearWithPopulationIncrease,
+    measuringLeft,
+  ]);
 
   return (
     <section className="flex h-screen bg-[#0D1333]">
       <div className="chart-container flex-col text-right border-solid border-black ">
-        <h2 className="text-black ml-10 font-bold">Population Data</h2>
-        <div className="total-population text-black ml-10 mb-6 font-bold">
-          Total Population: {totalPopulation}
+        <h2 className="text-black ml-10 font-bold text-4xl mt-[-70p]">
+          Population growth per country 1950 to 2021
+        </h2>
+        <div className="total-population text-black ml-10 mb-6  font-bold text-2xl">
+          Total Population: {formatNumberWithCommas(totalPopulation)}
         </div>
 
         {filteredData.map((item, index) => (
           <div key={index} className="flex">
-            <p className="country-name text-slate-600 font-semibold text-right align-middle justify-center w-[150px] p-2 ml-0 absolute">
+            <p className="country-name text-slate-600 font-semibold text-right align-middle justify-center w-[250px] p-2 ml-0 absolute">
               {item["Country name"]}
             </p>
             <div className="chart w-[100%]">
               <div
-                className="ml-[150px] h-[25px] border bg-blue-500 align-middle justify-center mt-2"
+                className="ml-[250px] h-[25px] border bg-blue-500 align-middle justify-center mt-2"
                 style={{
                   width: `${item.graphWidth}px`,
-                  maxWidth: "1400px",
+                  maxWidth: "1300px",
                 }}
               ></div>
             </div>
-            <p className="text-slate-400 mt-2 ml-2">{item.Population}</p>
+            <p className="text-slate-400 mt-2 ml-2">
+              {formatNumberWithCommas(item.Population)}
+            </p>{" "}
           </div>
         ))}
-
-        <div className="x-axis w-[92%] bg-black h-[1px] ml-10 mt-6">
+        {/* <div className="total-population text-black w-[98%] font-semibold pr-20 text-2xl text-right">
+          Total: {formatNumberWithCommas(totalPopulation)}
+        </div> */}
+        <div className="x-axis w-[92%] bg-black h-[1px] ml-10 mt-10">
           {/* Render tick marks or labels for the selected years */}
           {Array.from({ length: 75 }, (_, index) => 1950 + index).map(
             (year, index) => (
               <div key={index} style={{ position: "relative", zIndex: 1 }}>
+                {" "}
+                {year === yearWithPopulationIncrease && (
+                  <div className=" mt-[-37px] relative text-3xl text-black">
+                    {year}
+                  </div>
+                )}
                 <div
                   className="year-tick"
                   style={{
@@ -184,7 +204,7 @@ const Population = () => {
                     left: `${((year - 1950) / (2021 - 1950)) * 90 + 2}%`,
                   }}
                 >
-                  <div className=" rounded-full w-[1px] h-2 bg-black "></div>
+                  <div className=" rounded-full w-[1px] h-2 bg-black "></div>{" "}
                   <p className="ml-[-15px]">{index % 5 === 0 ? year : null}</p>
                 </div>
                 {year === yearWithPopulationIncrease && (
