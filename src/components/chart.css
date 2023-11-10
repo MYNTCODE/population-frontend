@@ -1,0 +1,40 @@
+/* App.css */
+ul {
+  list-style: none;
+
+  display: flex;
+  justify-content: center;
+  border-radius: 20px;
+  height: 80%;
+  background-color: antiquewhite;
+}
+/* .country-name {
+  border: solid #e74c3c;
+} */
+
+li span {
+  font-size: 14px;
+}
+
+li div {
+  flex-grow: 1;
+  height: 5px; /* ความยาวของแท่งกราฟ */
+  background-color: #e74c3c; /* สีขอบแท่งกราฟ */
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(205, 219, 236);
+  padding: 1%;
+  width: 100%;
+  place-items: start;
+  height: 80%;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
