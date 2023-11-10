@@ -20,11 +20,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #6e6e6e;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: rgb(81, 152, 210);
 }
 
 /* body {

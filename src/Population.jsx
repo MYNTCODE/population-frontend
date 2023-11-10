@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formatNumberWithCommas } from "./utils/function";
+import { formatNumberWithCommas, getChartColor } from "./utils/function";
 
 const filterCountries = (data, countriesToExclude) => {
   return data.filter(
@@ -36,7 +36,7 @@ const Population = () => {
           `https://backend-api-population.vercel.app/api/v1/population?page=${page}`
         );
         const newData = await response.json();
-        console.log("DATA", newData);
+        // console.log("DATA", newData);
 
         const excludedCountries = [
           "Less developed regions",
@@ -127,11 +127,11 @@ const Population = () => {
           return page === 1 ? slicedData : [...slicedData];
         });
 
-        console.log(
-          "measuringLeftWithPopulationIncrease:",
-          measuringLeftWithPopulationIncrease
-        );
-        console.log("measuringWidth:", measuringWidth);
+        // console.log(
+        //   "measuringLeftWithPopulationIncrease:",
+        //   measuringLeftWithPopulationIncrease
+        // );
+        // console.log("measuringWidth:", measuringWidth);
 
         setCurrentPage(page);
       } catch (error) {
@@ -149,18 +149,19 @@ const Population = () => {
     totalPopulation,
     latestYearWithPopulationIncrease,
     measuringLeft,
+    measuringLeftWithPopulationIncrease,
+    measuringWidth,
   ]);
 
   return (
     <section className="flex h-screen bg-[#0D1333]">
       <div className="chart-container flex-col text-right border-solid border-black ">
-        <h2 className="text-black ml-10 font-bold text-4xl mt-[-70p]">
+        <h2 className="text-black ml-10 font-bold text-4xl mt-[-70px]">
           Population growth per country 1950 to 2021
         </h2>
-        <div className="total-population text-black ml-10 mb-6  font-bold text-2xl">
+        <div className="total-population text-slate-600  ml-10 mb-6  font-bold text-2xl">
           Total Population: {formatNumberWithCommas(totalPopulation)}
         </div>
-
         {filteredData.map((item, index) => (
           <div key={index} className="flex">
             <p className="country-name text-slate-600 font-semibold text-right align-middle justify-center w-[250px] p-2 ml-0 absolute">
@@ -168,14 +169,16 @@ const Population = () => {
             </p>
             <div className="chart w-[100%]">
               <div
-                className="ml-[250px] h-[25px] border bg-blue-500 align-middle justify-center mt-2"
+                className={`ml-[250px] h-[25px] border align-middle justify-center mt-2 ${getChartColor(
+                  item["Country name"]
+                )}`}
                 style={{
                   width: `${item.graphWidth}px`,
                   maxWidth: "1300px",
                 }}
               ></div>
             </div>
-            <p className="text-slate-400 mt-2 ml-2">
+            <p className="text-slate-500 text-[15px] mt-[9px] ml-2">
               {formatNumberWithCommas(item.Population)}
             </p>{" "}
           </div>
@@ -190,7 +193,7 @@ const Population = () => {
               <div key={index} style={{ position: "relative", zIndex: 1 }}>
                 {" "}
                 {year === yearWithPopulationIncrease && (
-                  <div className=" mt-[-37px] relative text-3xl text-black">
+                  <div className=" mt-[-36px]  relative text-3xl text-black">
                     {year}
                   </div>
                 )}
@@ -225,6 +228,16 @@ const Population = () => {
               </div>
             )
           )}
+        </div>{" "}
+        <div className="flex text-center align-middle justify-center w-full  h-[5%]">
+          <a
+            href="https://github.com/MYNTCODE"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {" "}
+            <p className="pt-16">MYNTCODE | GitHub</p>
+          </a>
         </div>
       </div>
     </section>
