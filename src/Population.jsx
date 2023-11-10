@@ -137,8 +137,8 @@ const Population = () => {
     };
 
     const intervalId = setInterval(() => {
-      fetchDataFromAPI(currentPage + 1);
-    }, 200);
+      fetchDataFromAPI(currentPage + 3);
+    }, 100);
 
     return () => clearInterval(intervalId);
   }, [currentPage, totalPopulation, latestYearWithPopulationIncrease]);
