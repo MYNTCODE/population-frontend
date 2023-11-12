@@ -9,6 +9,7 @@ export function getChartColor(Population) {
     case "Japan":
     case "Indonesia":
     case "Pakistan":
+      case "Iran":
       return "bg-[#7FADD5] ";
 
     case "Nigeria": //Africa
