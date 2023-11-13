@@ -1,8 +1,7 @@
-# React + Vite
+## Create Landing Page, convert data files and create APIs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository about convert excel file data up to the cloud storage and using it to create APIs to fetching data and display it on the website.
+this is my APIs https://backend-api-population.vercel.app/api/v1/population
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+It's not public APIs. You cannot use it without my permission from backend.
