@@ -9,6 +9,7 @@ export function getChartColor(Population) {
     case "Japan":
     case "Indonesia":
     case "Pakistan":
+    case "Iran":
       return "bg-[#7FADD5] ";
 
     case "Nigeria": //Africa
@@ -36,4 +37,10 @@ export function getChartColor(Population) {
     default:
       return "bg-[#E7EEFF] ";
   }
+}
+
+export function filterCountries(data, countriesToExclude) {
+  return data.filter(
+    (item) => !countriesToExclude.includes(item["Country name"])
+  );
 }

@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
-import { formatNumberWithCommas, getChartColor } from "./utils/function";
-
-const filterCountries = (data, countriesToExclude) => {
-  return data.filter(
-    (item) => !countriesToExclude.includes(item["Country name"])
-  );
-};
-
-// const displayedYears = [
-//   1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010,
-//   2015, 2021,
-// ];
+import {
+  formatNumberWithCommas,
+  getChartColor,
+  filterCountries,
+} from "./utils/function";
 
 const Population = () => {
   const [filteredData, setFilteredData] = useState([]);
@@ -28,7 +21,9 @@ const Population = () => {
   ] = useState(0);
   const [yearWithPopulationIncrease, setYearWithPopulationIncrease] =
     useState(0);
+  const [loading, setLoading] = useState(null);
 
+  // การแสดงผล
   useEffect(() => {
     const fetchDataFromAPI = async (page) => {
       try {
@@ -38,6 +33,7 @@ const Population = () => {
         const newData = await response.json();
         // console.log("DATA", newData);
 
+        // ไม่เกี่ยวข้อง
         const excludedCountries = [
           "Less developed regions",
           "Less developed regions, excluding least developed countries",
@@ -88,7 +84,10 @@ const Population = () => {
             return b.Population - a.Population || latestYearB - latestYearA;
           });
 
+          //แสดง data 12 อันดับเเรกตามตัวอย่าง
           const slicedData = prevData.slice(0, 12);
+
+          // ปรับค่าความยาวของ charts ตาม data ที่ต้องการ
           const maxGraphWidth = window.innerWidth;
           const scale =
             maxGraphWidth /
@@ -103,6 +102,7 @@ const Population = () => {
             slicedData.reduce((total, item) => total + item.Population, 0)
           );
 
+          //measuring x axis
           const measuringLeft =
             prevData.length > 0 ? prevData[0].graphWidth : 0;
 
@@ -137,13 +137,17 @@ const Population = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      setLoading(false);
     };
 
     const intervalId = setInterval(() => {
       fetchDataFromAPI(currentPage + 3);
-    }, 50);
+    }, 50); //100 or 50
 
-    return () => clearInterval(intervalId);
+    return () => {
+      setLoading(false);
+      clearInterval(intervalId);
+    };
   }, [
     currentPage,
     totalPopulation,
@@ -152,6 +156,10 @@ const Population = () => {
     measuringLeftWithPopulationIncrease,
     measuringWidth,
   ]);
+
+  if (loading) {
+    return <div className="Loading">Loading...</div>;
+  }
 
   return (
     <section className="flex h-screen bg-[#0D1333]">
